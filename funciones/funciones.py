@@ -7,7 +7,6 @@ from jose import jwt
 
 
 
-SECRETKEY = 'PRUEBATECNICA'
 ALGORITH = 'HS256'
 
 
