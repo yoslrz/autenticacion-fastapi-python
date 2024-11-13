@@ -1,0 +1,50 @@
+services:
+  user-server:
+    container_name: user-server
+    build:
+      context: .  # El contexto es la carpeta raíz del proyecto
+      dockerfile: Dockerfile
+    ports:
+      - '4001:8000'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASS_ADMIN_SQL}
+    env_file:
+      - .env
+    volumes:
+      - .:/app  # Para desarrollo, monta la raíz del proyecto en /app
+    depends_on:
+      user-sql:
+        condition: service_healthy
+    networks:
+      - shared-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ] 
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 5
+  user-sql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASS_ADMIN_SQL}
+    networks:
+      - shared-network
+    env_file:
+      - .env
+    volumes:
+      - user_sql_data:/var/lib/mysql
+    container_name: user-sql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-uroot', '-p$$"{PASS_ADMIN_SQL}"' ]
+      interval: 10s
+      timeout: 10s
+      start_period: 140s
+      retries: 5
+
+volumes:
+  user_sql_data:
+
+networks:
+  shared-network:
