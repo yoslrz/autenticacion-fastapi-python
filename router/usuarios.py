@@ -54,7 +54,7 @@ async def validador_tok(token:str=Depends(oauth2)):
         detail= {"texto":"Credenciales de autenticación inválidas"} ,
         headers={"WWW-Authenticate": "Bearer"})
     try:
-        info = jwt.decode(token, os.getenv("SECRET_GENERAL_KEY"), algorithms=[ALGORITH])
+        info = jwt.decode(token, os.getenv("SECRETKEY"), algorithms=[ALGORITH])
         fecha_ven = datetime.fromtimestamp(info.get("exp"))
         id_user = info.get('id')
         vigencia = fecha_ven - datetime.now()
