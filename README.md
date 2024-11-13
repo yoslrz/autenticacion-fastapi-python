@@ -13,7 +13,7 @@
     2. Crear un entorno virtual 
         comando en windows: python -m venv venv, donde el segundo venv es el nombre del entorno virtual
     3. Activar entorno virtual
-        comando: 
+        comando: {nombre_entorno}/Scripts/activate
     4. Ejecutar el docker con el comando
         docker-compose up --build -d 
     5. Parar los docker usar el comando 
